@@ -1,7 +1,7 @@
 import os
 import subprocess
 from pathlib import Path
-
+import shutil
 
 def open_folder(path):
 
@@ -56,8 +56,24 @@ def open_app(name):
 
     shortcut = find_app(name)
 
-    if shortcut is None:
-        print("Error: Application not found!")
+    print("Searching for:", name)
+
+    if shortcut is not None:
+
+        print("Found:", shortcut)
+        print("Opening:", shortcut)
+
+        os.startfile(shortcut)
         return
 
-    os.startfile(shortcut)
+    executable = shutil.which(name)
+
+    if executable is not None:
+
+        print("Found executable:", executable)
+        print("Opening:", executable)
+
+        subprocess.Popen([executable])
+        return
+
+    print("Error: Application not found!")
