@@ -6,8 +6,8 @@ def listen():
     recognizer = sr.Recognizer()
 
     with sr.Microphone() as source:
-        
-        print("Listening...")
+
+        print("\nListening...")
         audio = recognizer.listen(source)
 
     try:
@@ -18,7 +18,7 @@ def listen():
 
     except sr.UnknownValueError:
 
-        print("Sorry, I couldn't understand you.")
+        print("I couldn't understand you.")
         return None
 
     except sr.RequestError:

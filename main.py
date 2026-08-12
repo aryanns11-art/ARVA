@@ -2,6 +2,27 @@ from voice import listen
 from command import execute_command
 
 
-command = listen()
+print("================================")
+print("        ARVA Assistant")
+print("================================")
+print("Say a command. Say 'exit' to stop.")
 
-execute_command(command)
+
+while True:
+
+    command = listen()
+
+    if command is None:
+        continue
+
+    if command.lower().strip() in [
+        "exit",
+        "quit",
+        "stop",
+        "goodbye arva",
+    ]:
+
+        print("Goodbye!")
+        break
+
+    execute_command(command)

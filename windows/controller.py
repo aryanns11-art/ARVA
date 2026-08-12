@@ -1,49 +1,29 @@
 import os
+import shutil
 import subprocess
 from pathlib import Path
-import shutil
 
-def open_folder(path):
 
-    path = Path(path)
-
-    if not path.exists():
-        print("Error: Folder does not exist!")
-        return
-
-    if not path.is_dir():
-        print("Error: Path is not a folder!")
-        return
-
-    os.startfile(path)
-
-#--------------------------------------------------------------------
-
-def open_file(path):
-
-    path = Path(path)
-
-    if not path.exists():
-        print("Error: File does not exist!")
-        return
-
-    if not path.is_file():
-        print("Error: Path is not a file!")
-        return
-
-    os.startfile(path)
-
-#--------------------------------------------------------------------
-
-USER_PROGRAMS = (Path(os.environ["APPDATA"])/ "Microsoft/Windows/Start Menu/Programs")  
+USER_PROGRAMS = (Path(os.environ["APPDATA"])/ "Microsoft/Windows/Start Menu/Programs")
 SYSTEM_PROGRAMS = (Path(os.environ["ProgramData"])/ "Microsoft/Windows/Start Menu/Programs")
+
+SPECIAL_FOLDERS = {
+    "downloads": Path.home() / "Downloads",
+    "documents": Path.home() / "Documents",
+    "desktop": Path.home() / "Desktop",
+    "pictures": Path.home() / "Pictures",
+    "videos": Path.home() / "Videos",
+}
 
 
 def find_app(name):
 
-    name = name.lower()
+    name = name.lower().strip()
 
     for folder in [USER_PROGRAMS, SYSTEM_PROGRAMS]:
+
+        if not folder.exists():
+            continue
 
         for shortcut in folder.rglob("*.lnk"):
 
@@ -51,6 +31,7 @@ def find_app(name):
                 return shortcut
 
     return None
+
 
 def open_app(name):
 
@@ -63,7 +44,7 @@ def open_app(name):
         print("Opening:", shortcut)
 
         os.startfile(shortcut)
-        return
+        return True
 
     executable = shutil.which(name)
 
@@ -73,32 +54,70 @@ def open_app(name):
         print("Opening:", executable)
 
         subprocess.Popen([executable])
-        return
+        return True
 
-    print("Error: Application not found!")
+    print("I couldn't find that application.")
+    return False
 
-#---------------------------------------------
-
-SPECIAL_FOLDERS = {
-    "downloads": Path.home() / "Downloads",
-    "documents": Path.home() / "Documents",
-    "desktop": Path.home() / "Desktop",
-    "pictures": Path.home() / "Pictures",
-    "videos": Path.home() / "Videos",
-}
 
 def open_folder_name(name):
 
     name = name.lower().strip()
 
-    if name not in SPECIAL_FOLDERS:
-        print("Error: Folder not found!")
-        return
+    folder = SPECIAL_FOLDERS.get(name)
 
-    folder = SPECIAL_FOLDERS[name]
+    if folder is None:
+
+        print("I don't know that folder.")
+        return False
 
     if not folder.exists():
-        print("Error: Folder does not exist!")
-        return
+
+        print("That folder does not exist.")
+        return False
+
+    print("Opening folder:", folder)
 
     os.startfile(folder)
+
+    return True
+
+
+def find_file(name):
+
+    name = name.lower().strip()
+
+    search_locations = [
+        Path.home() / "Desktop",
+        Path.home() / "Documents",
+        Path.home() / "Downloads",
+        Path("D:/ARVA"),
+    ]
+
+    for location in search_locations:
+
+        if not location.exists():
+            continue
+
+        for file in location.rglob("*"):
+
+            if file.is_file() and file.name.lower() == name:
+                return file
+
+    return None
+
+
+def open_file(name):
+
+    file = find_file(name)
+
+    if file is None:
+
+        print("I couldn't find that file.")
+        return False
+
+    print("Opening file:", file)
+
+    os.startfile(file)
+
+    return True

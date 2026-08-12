@@ -1,26 +1,36 @@
-from windows.controller import open_app
-from windows.controller import open_app, open_folder_name, open_path
+from parser import parse_command
+from windows.controller import (
+    open_app,
+    open_folder_name,
+    open_file,
+)
 
 
 def execute_command(command):
 
-    if command is None:
+    result = parse_command(command)
+
+    if result is None:
         return
 
-    command = command.lower().strip()
+    intent = result["intent"]
+    target = result["target"]
 
-    if not command.startswith("open "):
-        print("I don't know how to do that yet.")
-        return
+    print("Intent:", intent)
+    print("Target:", target)
 
-    target = command[5:].strip()
+    if intent == "OPEN_APP":
 
-    if not target:
-        print("What should I open?")
-        return
+        open_app(target)
 
-    if target in ["downloads", "documents", "desktop", "pictures", "videos"]:
+    elif intent == "OPEN_FOLDER":
+
         open_folder_name(target)
-        return
 
-    open_app(target)
+    elif intent == "OPEN_FILE":
+
+        open_file(target)
+
+    else:
+
+        print("I don't know how to do that yet.")
