@@ -1,4 +1,5 @@
 from windows.controller import open_app
+from windows.controller import open_app, open_folder_name, open_path
 
 
 def execute_command(command):
@@ -8,14 +9,18 @@ def execute_command(command):
 
     command = command.lower().strip()
 
-    if command.startswith("open "):
-
-        app_name = command[5:].strip()
-
-        if app_name:
-            open_app(app_name)
-        else:
-            print("Which application should I open?")
-
-    else:
+    if not command.startswith("open "):
         print("I don't know how to do that yet.")
+        return
+
+    target = command[5:].strip()
+
+    if not target:
+        print("What should I open?")
+        return
+
+    if target in ["downloads", "documents", "desktop", "pictures", "videos"]:
+        open_folder_name(target)
+        return
+
+    open_app(target)

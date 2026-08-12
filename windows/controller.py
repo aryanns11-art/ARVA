@@ -55,7 +55,6 @@ def find_app(name):
 def open_app(name):
 
     shortcut = find_app(name)
-
     print("Searching for:", name)
 
     if shortcut is not None:
@@ -77,3 +76,29 @@ def open_app(name):
         return
 
     print("Error: Application not found!")
+
+#---------------------------------------------
+
+SPECIAL_FOLDERS = {
+    "downloads": Path.home() / "Downloads",
+    "documents": Path.home() / "Documents",
+    "desktop": Path.home() / "Desktop",
+    "pictures": Path.home() / "Pictures",
+    "videos": Path.home() / "Videos",
+}
+
+def open_folder_name(name):
+
+    name = name.lower().strip()
+
+    if name not in SPECIAL_FOLDERS:
+        print("Error: Folder not found!")
+        return
+
+    folder = SPECIAL_FOLDERS[name]
+
+    if not folder.exists():
+        print("Error: Folder does not exist!")
+        return
+
+    os.startfile(folder)
