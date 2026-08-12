@@ -17,6 +17,7 @@ def open_folder(path):
 
     os.startfile(path)
 
+#--------------------------------------------------------------------
 
 def open_file(path):
 
@@ -32,17 +33,31 @@ def open_file(path):
 
     os.startfile(path)
 
-APPS = {
-    "notepad": "notepad.exe",
-    "calculator": "calc.exe",
-}
+#--------------------------------------------------------------------
 
-def open_app(name):
+USER_PROGRAMS = (Path(os.environ["APPDATA"])/ "Microsoft/Windows/Start Menu/Programs")  
+SYSTEM_PROGRAMS = (Path(os.environ["ProgramData"])/ "Microsoft/Windows/Start Menu/Programs")
+
+
+def find_app(name):
 
     name = name.lower()
 
-    if name not in APPS:
-        print("Error: Application not found.")
+    for folder in [USER_PROGRAMS, SYSTEM_PROGRAMS]:
+
+        for shortcut in folder.rglob("*.lnk"):
+
+            if name in shortcut.stem.lower():
+                return shortcut
+
+    return None
+
+def open_app(name):
+
+    shortcut = find_app(name)
+
+    if shortcut is None:
+        print("Error: Application not found!")
         return
 
-    subprocess.Popen([APPS[name]])
+    os.startfile(shortcut)
