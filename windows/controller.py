@@ -121,3 +121,21 @@ def open_file(name):
     os.startfile(file)
 
     return True
+
+
+def close_app(name):
+
+    name = name.lower().strip()
+
+    result = subprocess.run(
+        ["taskkill", "/IM", f"{name}.exe", "/F"],
+        capture_output=True,
+        text=True
+    )
+
+    if result.returncode == 0:
+        print(f"Closed: {name}")
+        return True
+
+    print(f"Could not close: {name}")
+    return False

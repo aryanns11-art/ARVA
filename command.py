@@ -3,6 +3,7 @@ from windows.controller import (
     open_app,
     open_folder_name,
     open_file,
+    close_app,
 )
 
 
@@ -30,6 +31,10 @@ def execute_command(command):
     elif intent == "OPEN_FILE":
 
         open_file(target)
+
+    elif intent == "CLOSE_APP":
+
+        close_app(target)
 
     else:
 

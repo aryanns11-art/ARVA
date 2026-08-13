@@ -5,6 +5,13 @@ OPEN_WORDS = [
     "run",
 ]
 
+CLOSE_WORDS = [
+    "close",
+    "stop",
+    "exit",
+    "quit",
+]
+
 FOLDER_NAMES = [
     "downloads",
     "documents",
@@ -41,7 +48,6 @@ def clean_command(command):
 
     return command
 
-
 def parse_command(command):
 
     if command is None:
@@ -59,7 +65,6 @@ def parse_command(command):
 
             target = command[len(word):].strip()
 
-            # Remove conversational words
             target = target.removeprefix("my ")
             target = target.removesuffix(" folder")
             target = target.removesuffix(" file")
@@ -86,6 +91,27 @@ def parse_command(command):
 
             return {
                 "intent": "OPEN_APP",
+                "target": target
+            }
+
+    # -------------------------
+    # CLOSE / EXIT / STOP
+    # -------------------------
+
+    for word in CLOSE_WORDS:
+
+        if command.startswith(word):
+
+            target = command[len(word):].strip()
+
+            if not target:
+                return {
+                    "intent": "UNKNOWN",
+                    "target": None
+                }
+
+            return {
+                "intent": "CLOSE_APP",
                 "target": target
             }
 
