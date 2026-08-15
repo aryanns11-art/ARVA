@@ -29,6 +29,10 @@ PRESS_WORDS = [
     "press",
 ]
 
+COMBINATION_WORDS = [
+    "hotkey",
+]
+
 def clean_command(command):
 
     command = command.lower().strip()
@@ -160,6 +164,12 @@ def parse_command(command):
                 return {
                     "intent": "UNKNOWN",
                     "target": None
+                }
+
+            if ' ' in target:
+                return{
+                    'intent':'PRESS_HOTKEY',
+                    'target': target
                 }
 
             return {

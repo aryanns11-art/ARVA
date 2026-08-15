@@ -5,7 +5,7 @@ from windows.controller import (
     open_file,
     close_app,
 )
-from windows.keyboard import type_text, press_key
+from windows.keyboard import type_text, press_key , press_hotkey
 
 def execute_command(command):
 
@@ -43,6 +43,11 @@ def execute_command(command):
     elif intent == "PRESS_KEY":
     
         press_key(target)
+
+    elif intent == "PRESS_HOTKEY":
+
+        keys = target.split()
+        press_hotkey(keys)
 
     else:
 
