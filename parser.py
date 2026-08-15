@@ -20,6 +20,15 @@ FOLDER_NAMES = [
     "videos",
 ]
 
+TYPE_WORDS = [
+    "type",
+    "write",
+]
+
+PRESS_WORDS = [
+    "press",
+]
+
 def clean_command(command):
 
     command = command.lower().strip()
@@ -112,6 +121,49 @@ def parse_command(command):
 
             return {
                 "intent": "CLOSE_APP",
+                "target": target
+            }
+
+    # -------------------------
+    # TYPE TEXT
+    # -------------------------
+
+    for word in TYPE_WORDS:
+
+        if command.startswith(word):
+
+            target = command[len(word):].strip()
+
+            if not target:
+                return {
+                    "intent": "UNKNOWN",
+                    "target": None
+                }
+
+            return {
+                "intent": "TYPE_TEXT",
+                "target": target
+            }
+
+
+    # -------------------------
+    # PRESS KEY
+    # -------------------------
+
+    for word in PRESS_WORDS:
+
+        if command.startswith(word):
+
+            target = command[len(word):].strip()
+
+            if not target:
+                return {
+                    "intent": "UNKNOWN",
+                    "target": None
+                }
+
+            return {
+                "intent": "PRESS_KEY",
                 "target": target
             }
 

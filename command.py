@@ -5,7 +5,7 @@ from windows.controller import (
     open_file,
     close_app,
 )
-
+from windows.keyboard import type_text, press_key
 
 def execute_command(command):
 
@@ -35,6 +35,14 @@ def execute_command(command):
     elif intent == "CLOSE_APP":
 
         close_app(target)
+
+    elif intent == "TYPE_TEXT":
+
+        type_text(target)
+    
+    elif intent == "PRESS_KEY":
+    
+        press_key(target)
 
     else:
 
