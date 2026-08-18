@@ -1,7 +1,7 @@
 from parser import parse_command
 from windows.controller import ( open_app, open_folder_name, open_file, close_app)
 from windows.keyboard import type_text, press_key , press_hotkey
-from windows.mouse import ( click, double_click, right_click, scroll)
+from windows.mouse import ( click, double_click, right_click, scroll  , move_mouse)
 
 def execute_command(command):
 
@@ -57,6 +57,11 @@ def execute_command(command):
 
         else:
             print("Should I scroll up or down?")
+
+    elif intent == "MOUSE_MOVE":
+
+        x, y = target   
+        move_mouse(x, y)
 
     else:
 

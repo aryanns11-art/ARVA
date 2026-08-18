@@ -49,6 +49,10 @@ MOUSE_SCROLL_WORDS = [
     "scroll",
 ]
 
+MOVE_MOUSE=[
+    'move',
+]
+
 def clean_command(command):
 
     command = command.lower().strip()
@@ -153,28 +157,22 @@ def parse_command(command):
 
     for word in PRESS_WORDS:
 
-        for word in PRESS_WORDS:
-
-            if command == word or command.startswith(word + " "):
-
-                target = command[len(word):].strip()
-
-                if not target:
-                    return {
-                        "intent": "UNKNOWN",
-                        "target": None
-                    }
-
-                if ' ' in target:
-                    return{
-                        'intent':'PRESS_HOTKEY',
-                        'target': target
-                    }
-
+        if command == word or command.startswith(word + " "):
+            target = command[len(word):].strip()
+            if not target:
                 return {
-                    "intent": "PRESS_KEY",
-                    "target": target
+                    "intent": "UNKNOWN",
+                    "target": None
                 }
+            if ' ' in target:
+                return{
+                    'intent':'PRESS_HOTKEY',
+                    'target': target
+                }
+            return {
+                "intent": "PRESS_KEY",
+                "target": target
+            }
 
     # -------MOUSE DOUBLE CLICK----------
     
@@ -221,6 +219,38 @@ def parse_command(command):
             "intent": "MOUSE_SCROLL",
             "target": "down"
         }
+
+
+    # ------------ MOUSE MOVE -----------------------
+
+    if command.startswith("move mouse to "):
+
+        target = command[len("move mouse to "):].strip()
+        parts = target.split()
+
+        if len(parts) != 2:
+            return {
+                "intent": "UNKNOWN",
+                "target": None
+            }
+
+        try:
+            x = int(parts[0])
+            y = int(parts[1])
+
+        except ValueError:
+            return {
+                "intent": "UNKNOWN",
+                "target": None
+            }
+
+        return {
+            "intent": "MOUSE_MOVE",
+            "target": (x, y)
+        }
+
+
+    
     
 
     return {

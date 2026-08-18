@@ -33,3 +33,9 @@ def scroll(amount):
     print(f"Scrolling: {amount}")
     pyautogui.scroll(amount)
     return True
+
+def move_mouse(x, y):
+
+    print(f"Moving mouse to: ({x}, {y})")
+    pyautogui.moveTo(x, y, duration=0.2)
+    return True
