@@ -49,8 +49,11 @@ MOUSE_SCROLL_WORDS = [
     "scroll",
 ]
 
-MOVE_MOUSE=[
-    'move',
+MOVE_PREFIXES = [
+    "move mouse to ",
+    "move cursor to ",
+    "move the mouse to ",
+    "move the cursor to ",
 ]
 
 def clean_command(command):
@@ -223,37 +226,38 @@ def parse_command(command):
 
     # ------------ MOUSE MOVE -----------------------
 
-    if command.startswith("move mouse to "):
+    for prefix in MOVE_PREFIXES:
 
-        target = command[len("move mouse to "):].strip()
-        parts = target.split()
+        if command.startswith(prefix):
 
-        if len(parts) != 2:
+            target = command[len(prefix):].strip()
+
+            parts = target.split()
+
+            if len(parts) != 2:
+                print("Please provide both X and Y coordinates.")
+                return {
+                    "intent": "UNKNOWN",
+                    "target": None
+                }
+
+            try:
+                x = int(parts[0])
+                y = int(parts[1])
+
+            except ValueError:
+                print("Coordinates must be numbers.")
+                return {
+                    "intent": "UNKNOWN",
+                    "target": None
+                }
+
             return {
-                "intent": "UNKNOWN",
-                "target": None
+                "intent": "MOUSE_MOVE",
+                "target": (x, y)
             }
 
-        try:
-            x = int(parts[0])
-            y = int(parts[1])
-
-        except ValueError:
             return {
-                "intent": "UNKNOWN",
-                "target": None
-            }
-
-        return {
-            "intent": "MOUSE_MOVE",
-            "target": (x, y)
-        }
-
-
-    
-    
-
-    return {
         "intent": "UNKNOWN",
         "target": None
     }
