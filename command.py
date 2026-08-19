@@ -2,6 +2,7 @@ from parser import parse_command
 from windows.controller import ( open_app, open_folder_name, open_file, close_app)
 from windows.keyboard import type_text, press_key , press_hotkey
 from windows.mouse import ( click, double_click, right_click, scroll  , move_mouse)
+from windows.screen import take_screenshot
 
 def execute_command(command):
 
@@ -63,6 +64,11 @@ def execute_command(command):
         x, y = target   
         move_mouse(x, y)
 
-    else:
+    elif intent == "TAKE_SCREENSHOT":
 
+        screenshot = take_screenshot()
+        screenshot.save("screen.png")
+        print("Screenshot saved as screen.png")
+
+    else:
         print("I don't know how to do that yet.")

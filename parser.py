@@ -56,6 +56,12 @@ MOVE_PREFIXES = [
     "move the cursor to ",
 ]
 
+SCREENSHOT_WORDS = [
+    "take screenshot",
+    "screenshot",
+    "capture screen",
+]
+
 def clean_command(command):
 
     command = command.lower().strip()
@@ -256,6 +262,19 @@ def parse_command(command):
                 "intent": "MOUSE_MOVE",
                 "target": (x, y)
             }
+
+
+    # ------------ SCREENSHOT -----------------------
+
+    for word in SCREENSHOT_WORDS:
+    
+        if command == word:
+        
+            return {
+                "intent": "TAKE_SCREENSHOT",
+                "target": None
+            }
+        
 
             return {
         "intent": "UNKNOWN",
