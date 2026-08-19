@@ -3,6 +3,7 @@ from windows.controller import ( open_app, open_folder_name, open_file, close_ap
 from windows.keyboard import type_text, press_key , press_hotkey
 from windows.mouse import ( click, double_click, right_click, scroll  , move_mouse)
 from windows.screen import take_screenshot
+from windows.ocr import read_text_from_image
 
 def execute_command(command):
 
@@ -69,6 +70,15 @@ def execute_command(command):
         screenshot = take_screenshot()
         screenshot.save("screen.png")
         print("Screenshot saved as screen.png")
+
+    elif intent == "READ_SCREEN":
+
+        screenshot = take_screenshot()
+        text = read_text_from_image(screenshot)
+
+        print("========== SCREEN TEXT ==========")
+        print(text)
+        print("=================================")
 
     else:
         print("I don't know how to do that yet.")

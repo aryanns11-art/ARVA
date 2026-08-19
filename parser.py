@@ -62,6 +62,13 @@ SCREENSHOT_WORDS = [
     "capture screen",
 ]
 
+READ_SCREEN_WORDS = [
+    "read the screen",
+    "read screen",
+    "what is on my screen",
+    "what is on the screen",
+]
+
 def clean_command(command):
 
     command = command.lower().strip()
@@ -267,14 +274,25 @@ def parse_command(command):
     # ------------ SCREENSHOT -----------------------
 
     for word in SCREENSHOT_WORDS:
-    
+
         if command == word:
-        
+
             return {
                 "intent": "TAKE_SCREENSHOT",
                 "target": None
             }
-        
+
+
+    # ------------ READ SCREEN -----------------------
+
+    for word in READ_SCREEN_WORDS:
+
+        if command == word:
+
+            return {
+                "intent": "READ_SCREEN",
+                "target": None
+            }
 
             return {
         "intent": "UNKNOWN",
