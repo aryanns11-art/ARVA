@@ -6,6 +6,11 @@ def click():
     pyautogui.click()
     return True
 
+def click_at(x, y):
+
+    print(f"Clicking at: ({x}, {y})")
+
+    pyautogui.click(x, y)
 
 def double_click():
 

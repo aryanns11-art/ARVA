@@ -294,7 +294,27 @@ def parse_command(command):
                 "target": None
             }
 
+
+    # ------------ CLICK TEXT -----------------------
+
+    if command.startswith("click "):
+
+        target = command[len("click "):].strip()
+
+        if not target:
             return {
+                "intent": "UNKNOWN",
+                "target": None
+            }
+
+        return {
+            "intent": "CLICK_TEXT",
+            "target": target
+        }
+
+
+
+    return {
         "intent": "UNKNOWN",
         "target": None
     }
