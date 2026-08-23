@@ -3,7 +3,7 @@ from windows.controller import ( open_app, open_folder_name, open_file, close_ap
 from windows.keyboard import type_text, press_key , press_hotkey
 from windows.mouse import ( click, double_click, right_click, scroll  , move_mouse , click_at )
 from windows.screen import take_screenshot
-from windows.ocr import read_text_from_image,find_text
+from windows.ocr import read_text_from_image, find_best_text
 
 def execute_command(command):
 
@@ -83,25 +83,18 @@ def execute_command(command):
     elif intent == "CLICK_TEXT":
 
         screenshot = take_screenshot()
-        result = find_text( screenshot, target )
+        result = find_best_text( screenshot, target )
 
         if result is None:
 
-            print(f"Could not find '{target}' on screen.")
+            print(f"Could not find a reliable match for '{target}'.")
             return
-
-        confidence = float(result["confidence"])
 
         print(f"Found: {result['text']}")
         print(f"Position: ({result['x']}, {result['y']})")
-        print(f"Confidence: {confidence}")
+        print(f"Confidence: {result['confidence']}")
 
-        if confidence < 70:
-
-            print("OCR confidence too low. Not clicking.")
-            return
-
-        click_at( result["x"], result["y"] )
+        click_at(result["x"],result["y"])
 
     else:
         print("I don't know how to do that yet.")
