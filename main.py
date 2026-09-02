@@ -1,6 +1,6 @@
 from voice import listen
 from command import execute_command
-
+from windows.voice import speak
 
 print("================================")
 print("        ARVA Assistant")
@@ -23,6 +23,7 @@ while True:
     ]:
 
         print("Goodbye!")
+        speak("Goodbye!")
         break
 
     execute_command(command)

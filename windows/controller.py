@@ -3,6 +3,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
+from windows.voice import speak
 
 USER_PROGRAMS = (Path(os.environ["APPDATA"])/ "Microsoft/Windows/Start Menu/Programs")
 SYSTEM_PROGRAMS = (Path(os.environ["ProgramData"])/ "Microsoft/Windows/Start Menu/Programs")
@@ -44,6 +45,7 @@ def open_app(name):
         print("Opening:", shortcut)
 
         os.startfile(shortcut)
+        speak(f"Opening {shortcut.stem}.")
         return True
 
     executable = shutil.which(name)
@@ -54,9 +56,11 @@ def open_app(name):
         print("Opening:", executable)
 
         subprocess.Popen([executable])
+        speak(f"Opening {name}.")
         return True
 
     print("I couldn't find that application.")
+    speak("I couldn't find that application.")
     return False
 
 
@@ -69,16 +73,19 @@ def open_folder_name(name):
     if folder is None:
 
         print("I don't know that folder.")
+        speak("I don't know that folder.")
         return False
 
     if not folder.exists():
 
         print("That folder does not exist.")
+        speak("That folder does not exist.")
         return False
 
     print("Opening folder:", folder)
 
     os.startfile(folder)
+    speak(f"Opening {name}.")
 
     return True
 
@@ -114,11 +121,13 @@ def open_file(name):
     if file is None:
 
         print("I couldn't find that file.")
+        speak("I couldn't find that file.")
         return False
 
     print("Opening file:", file)
 
     os.startfile(file)
+    speak(f"Opening {file.name}.")
 
     return True
 
@@ -135,7 +144,9 @@ def close_app(name):
 
     if result.returncode == 0:
         print(f"Closed: {name}")
+        speak(f"Closed {name}.")
         return True
 
     print(f"Could not close: {name}")
+    speak(f"I couldn't close {name}.")
     return False

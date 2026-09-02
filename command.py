@@ -4,6 +4,7 @@ from windows.keyboard import type_text, press_key , press_hotkey
 from windows.mouse import ( click, double_click, right_click, scroll  , move_mouse , click_at )
 from windows.screen import take_screenshot
 from windows.ocr import read_text_from_image, find_best_text
+from windows.voice import speak
 
 def execute_command(command):
 
@@ -70,6 +71,7 @@ def execute_command(command):
         screenshot = take_screenshot()
         screenshot.save("screen.png")
         print("Screenshot saved as screen.png")
+        speak("Screenshot saved.")
 
     elif intent == "READ_SCREEN":
 
@@ -80,6 +82,11 @@ def execute_command(command):
         print(text)
         print("=================================")
 
+        if text.strip():
+            speak(text.strip())
+        else:
+            speak("I couldn't read any text on the screen.")
+
     elif intent == "CLICK_TEXT":
 
         screenshot = take_screenshot()
@@ -88,6 +95,7 @@ def execute_command(command):
         if result is None:
 
             print(f"Could not find a reliable match for '{target}'.")
+            speak(f"I couldn't find {target}.")
             return
 
         print(f"Found: {result['text']}")
@@ -95,6 +103,8 @@ def execute_command(command):
         print(f"Confidence: {result['confidence']}")
 
         click_at(result["x"],result["y"])
+        speak(f"Clicked {result['text']}.")
 
     else:
         print("I don't know how to do that yet.")
+        speak("I don't know how to do that yet.")

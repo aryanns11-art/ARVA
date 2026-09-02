@@ -1,5 +1,7 @@
 import pyautogui
 
+from windows.voice import speak
+
 
 def normalize_key(key):
 
@@ -20,6 +22,7 @@ def type_text(text):
     print(f"Typing: {text}")
 
     pyautogui.write(text, interval=0.03)
+    speak("Typing the text.")
 
     return True
 
@@ -34,6 +37,7 @@ def press_key(key):
     print(f"Pressing: {key}")
 
     pyautogui.press(key)
+    speak(f"Pressing {key}.")
 
     return True
 
@@ -47,5 +51,6 @@ def press_hotkey(keys):
     print(f"Pressing combination: {' + '.join(keys)}")
 
     pyautogui.hotkey(*keys)
+    speak(f"Pressing {' plus '.join(keys)}.")
 
     return True
